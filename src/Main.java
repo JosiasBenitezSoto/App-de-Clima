@@ -5,9 +5,12 @@ public class Main {
         Servicio weatherService = new Servicio();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Ingrese el nombre de la ciudad o país: ");
-        String location = scanner.nextLine();
+        System.out.print("Ingrese la latitud: ");
+        double latitude = scanner.nextDouble();
 
-        weatherService.printWeather(location);
+        System.out.print("Ingrese la longitud: ");
+        double longitude = scanner.nextDouble();
+
+        weatherService.printWeather(latitude, longitude);
     }
 }

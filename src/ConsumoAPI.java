@@ -9,19 +9,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class ConsumoAPI {
-    private static final String API_KEY = "8f9460625amsh5f5ec91ac33ce53p1a8502jsndb873f34be90";
-    private static final String API_HOST = "weatherapi-com.p.rapidapi.com";
-    private static final String API_URL = "https://weatherapi-com.p.rapidapi.com/current.json?q=%s";
+    private static final String WEATHER_API_KEY = "5d80201ca892401084a1a19b3ba68fb5";
+    private static final String GEO_API_KEY = "5d80201ca892401084a1a19b3ba68fb5";  // Asegúrate de reemplazar esto con tu clave API real
+    private static final String GEO_API_URL = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=" + GEO_API_KEY;
+    private static final String WEATHER_API_URL = "https://api.weatherbit.io/v2.0/current?lat=%s&lon=%s&key=" + WEATHER_API_KEY;
 
-    public JsonObject getWeather(String location) throws IOException, InterruptedException {
+    public JsonObject getWeather(double latitude, double longitude) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        String encodedLocation = URLEncoder.encode(location, StandardCharsets.UTF_8);
-        String url = String.format(API_URL, encodedLocation);
+        String url = String.format(WEATHER_API_URL, latitude, longitude);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("x-rapidapi-key", API_KEY)
-                .header("x-rapidapi-host", API_HOST)
                 .GET()
                 .build();
 
@@ -30,7 +28,7 @@ public class ConsumoAPI {
         if (response.statusCode() == 200) {
             return new Gson().fromJson(response.body(), JsonObject.class);
         } else {
-            throw new IOException("Error en la solicitud: " + response.statusCode());
+            throw new IOException("Error en la solicitud del clima: " + response.statusCode());
         }
     }
 }
